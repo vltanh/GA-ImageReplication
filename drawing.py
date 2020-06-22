@@ -1,3 +1,4 @@
+import cv2
 import numpy as np
 import copy
 
@@ -15,7 +16,11 @@ class Drawing:
         return out
 
     def calculate_fitness(self, img):
-        return np.linalg.norm(self.draw() - img)
+        # pred = cv2.cvtColor(self.draw(), cv2.COLOR_BGR2LAB)
+        # orig = cv2.cvtColor(img, cv2.COLOR_BGR2LAB)
+        pred = self.draw()
+        orig = img
+        return np.linalg.norm(pred - orig)
 
     def crossover(self, g):
         breed = copy.deepcopy(self.polygons)

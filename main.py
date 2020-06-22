@@ -10,7 +10,8 @@ from polygon import Polygon
 from drawing import Drawing
 from utils import decode
 
-inp = cv2.imread('input/monalisa.png', cv2.IMREAD_COLOR)
+inp = cv2.imread('input/piet.png', cv2.IMREAD_COLOR)
+inp = cv2.cvtColor(inp, cv2.COLOR_BGR2RGB)
 image_height, image_width = inp.shape[:2]
 
 # Configuration
@@ -57,13 +58,10 @@ for gen_idx in tbar:
 
     survive_count = int(cutoff_ratio*len(population) + 0.5)
     survive = np.array(population)[sorted_indices[:survive_count]]
-    elite = np.array(population)[sorted_indices[:int(1/cutoff_ratio + 0.5)]]
     
-    offspring = np.array(elite[0])
+    offspring = np.array(survive[0])
     for _ in range(n_of_drawings - 1):
-        g1 = survive[np.random.randint(len(survive))]
-        g2 = elite[np.random.randint(len(elite))]
-
+        g1, g2 = survive[np.random.choice(range(survive_count), 2, replace=False)]
         breed = g1.crossover(g2)
         offspring = np.hstack((offspring, breed))
 
